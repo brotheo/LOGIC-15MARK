@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Statement: Random Number Fairness</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary: #8b5cf6;
+            --background: #f1f5f9;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
+            --accent: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            color: white;
+            padding: 4rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z" fill="rgba(255,255,255,0.03)"/></svg>') repeat;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .section-header {
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .scenario-box {
+            background: #e0f2fe;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .data-structure {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .data-structure strong {
+            color: var(--primary-dark);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin-bottom: 0.25rem;
+        }
+
+        .requirements-list {
+            list-style-type: none;
+            margin-bottom: 2rem;
+        }
+
+        .requirements-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            color: var(--text-main);
+        }
+
+        .requirements-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .code-block {
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 0.95rem;
+            margin: 1.5rem 0;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            line-height: 1.6;
+        }
+
+        .formula {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            border: 1px dashed var(--secondary);
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .final-instructions {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 3rem;
+        }
+
+        .final-instructions ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .final-instructions li {
+            margin-bottom: 0.5rem;
+            color: #92400e;
+        }
+
+        .final-title {
+            color: #b45309;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="badge">15-MARK EXAM QUESTION</div>
+        <h1>Random Number Fairness Test</h1>
+    </header>
+
+    <div class="content">
+        
+        <div class="scenario-box">
+            A program is required to test the fairness of the random number generator.
+        </div>
+
+        <div class="section-header">Data Structures Provided</div>
+        
+        <div class="data-structure">
+            <strong>RandomNumber[]</strong>
+            <p>A one-dimensional (1D) array used to store 100,000 random integers.</p>
+        </div>
+
+        <div class="data-structure">
+            <strong>CountedNumber[]</strong>
+            <p>A two-dimensional (2D) array used to store the integers 1 to 10, inclusive, and the frequency of each integer (the number of times each integer was generated).</p>
+        </div>
+
+        <div class="section-header">Program Requirements</div>
+        <p style="margin-bottom: 1.5rem;">Write a program that meets the following requirements:</p>
+        <ul class="requirements-list">
+            <li>Generate 100,000 random integers between 1 and 10, inclusive.</li>
+            <li>Store each integer in the appropriate array.</li>
+            <li>Calculate the frequency of each of the integers 1 to 10 and store these values in the appropriate array.</li>
+            <li>Sort the contents of the counted number array in <strong>descending order</strong> of frequency.</li>
+            <li>Calculate the chance of generating each of the integers 1 to 10, rounded to four decimal places.<br>
+                <span style="display:inline-block; margin-top: 0.5rem;">Use the formula: <span class="formula">chance = frequency / 100000</span></span>
+            </li>
+            <li>Output each of the integers 1 to 10 in the order they are stored in the counted number array, along with the chance of generating them.</li>
+        </ul>
+
+        <div class="section-header">Reference Material: Ascending Sort Algorithm</div>
+        <p>The following is an example of an algorithm that sorts a 2D array in an <strong>ascending order</strong>. You will need to adapt this logic for your solution.</p>
+        
+        <div class="code-block">F &larr; TRUE
+WHILE F DO
+    F &larr; FALSE
+    FOR I &larr; 1 TO 9
+        IF A[I, 2] > A[I + 1, 2] THEN
+            T1 &larr; A[I, 1]
+            T2 &larr; A[I, 2]
+            A[I, 1] &larr; A[I + 1, 1]
+            A[I, 2] &larr; A[I + 1, 2]
+            A[I + 1, 1] &larr; T1
+            A[I + 1, 2] &larr; T2
+            F &larr; TRUE
+        ENDIF
+    NEXT I
+ENDWHILE</div>
+
+        <div class="final-instructions">
+            <div class="final-title">Crucial Formatting Instructions</div>
+            <ul>
+                <li>You must use pseudocode or program code.</li>
+                <li>Add comments to explain how your code works.</li>
+                <li>All arrays, variables, or constants used must be declared for this algorithm.</li>
+                <li>All inputs and outputs must contain suitable messages.</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

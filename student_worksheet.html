@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Worksheet: Random Number Fairness</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-light: #38bdf8;
+            --secondary: #4338ca;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --accent: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 100 L100 0 M0 0 L100 100" stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="none"/></svg>') repeat;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topic {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 3rem;
+            background: #f1f5f9;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        
+        .student-info-field {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .student-info-line {
+            display: inline-block;
+            border-bottom: 2px solid var(--text-muted);
+            width: 250px;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .section-header {
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+        
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+        }
+
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 2rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1.1rem;
+            margin: 1.5rem 0 2.5rem 0;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid #1e293b;
+            line-height: 1.8;
+        }
+
+        .fill-blank {
+            display: inline-block;
+            border-bottom: 2px dashed var(--primary);
+            width: 120px;
+            margin: 0 0.5rem;
+            color: transparent;
+        }
+        
+        .fill-blank-long {
+            width: 300px;
+        }
+        
+        .fill-blank-code {
+            border-bottom: 2px dashed #fcd34d;
+            display: inline-block;
+            width: 80px;
+        }
+        
+        .fill-blank-code-long {
+            border-bottom: 2px dashed #fcd34d;
+            display: inline-block;
+            width: 250px;
+        }
+
+        .box {
+            background: #fffbeb;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .box-title {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>STUDENT WORKSHEET</h1>
+        <div class="topic">15-Mark Question – Random Number Fairness</div>
+    </header>
+    
+    <div class="student-info">
+        <div class="student-info-field">
+            Name: <span class="student-info-line"></span>
+        </div>
+        <div class="student-info-field">
+            Date: <span class="student-info-line" style="width: 150px;"></span>
+        </div>
+    </div>
+
+    <div class="content">
+        
+        <div class="section-header">Section A: Understanding the Problem</div>
+        <p>Fill in the blanks based on the scenario discussed in class:</p>
+        <ul>
+            <li>The array RandomNumber[] stores <span class="fill-blank fill-blank-long"></span></li>
+            <li>The array CountedNumber[X,1] stores <span class="fill-blank fill-blank-long"></span></li>
+            <li>The array CountedNumber[X,2] stores <span class="fill-blank fill-blank-long"></span></li>
+        </ul>
+
+        <div class="section-header">Section B: Complete the Code (Easy)</div>
+        <p>Initialise the 2D array before counting starts:</p>
+        <div class="code-block">FOR X ← 1 TO 10
+   CountedNumber[X,1] ← <span class="fill-blank-code"></span>
+   CountedNumber[X,2] ← <span class="fill-blank-code"></span>
+NEXT X</div>
+
+        <div class="section-header">Section C: Random Number Generation</div>
+        <p>Fill in the missing parts to generate numbers and count their frequency simultaneously:</p>
+        <div class="code-block">FOR X ← 1 TO 100000
+
+   Temp ← ROUND(RANDOM() * <span class="fill-blank-code" style="width:40px;"></span>, 0) + <span class="fill-blank-code" style="width:40px;"></span>
+
+   RandomNumber[X] ← <span class="fill-blank-code"></span>
+
+   CountedNumber[<span class="fill-blank-code" style="width:60px;"></span>, 2] ← CountedNumber[<span class="fill-blank-code" style="width:60px;"></span>, 2] + 1
+
+NEXT X</div>
+
+        <div class="section-header">Section D: Sorting (Medium)</div>
+        <p>Complete the condition to sort the array in <strong>descending</strong> order (highest frequency first):</p>
+        <div class="code-block">IF CountedNumber[I,2] <span class="fill-blank-code" style="width:40px;"></span> CountedNumber[I+1,2] THEN</div>
+        <p style="margin-top: 1.5rem;">Should it be <strong>&lt;</strong> or <strong>&gt;</strong> ?</p>
+        <p>Why? <span class="fill-blank fill-blank-long" style="width: 100%; margin-left: 0; margin-top: 0.5rem;"></span><br>
+        <span class="fill-blank fill-blank-long" style="width: 100%; margin-left: 0; margin-top: 1.5rem;"></span></p>
+
+        <div class="section-header">Section E: Swap Logic (Challenge)</div>
+        <p>Fill in the correct variables to swap BOTH columns:</p>
+        <div class="code-block">Temp1 ← CountedNumber[I,1]
+Temp2 ← CountedNumber[I,2]
+
+CountedNumber[I,1] ← <span class="fill-blank-code-long"></span>
+CountedNumber[I,2] ← <span class="fill-blank-code-long"></span>
+
+CountedNumber[I+1,1] ← <span class="fill-blank-code-long"></span>
+CountedNumber[I+1,2] ← <span class="fill-blank-code-long"></span></div>
+
+        <div class="section-header">Section F: Output (Easy)</div>
+        <p>Complete the output statements:</p>
+        <div class="code-block">OUTPUT "Number: ", <span class="fill-blank-code-long"></span>
+OUTPUT "Chance: ", ROUND(<span class="fill-blank-code-long"></span> / 100000, 4)</div>
+
+        <div class="section-header">Section G: Full Challenge (Exam Style)</div>
+        <p>On a separate piece of paper, write the full pseudocode from start to finish using:</p>
+        <ul>
+            <li>Correct declarations (arrays and variables)</li>
+            <li>Loops (initialisation, generation, sorting, output)</li>
+            <li>Bubble sort logic</li>
+            <li>Calculated chance output</li>
+        </ul>
+
+        <div class="section-header">EXTENSION (Top Students)</div>
+        <div class="box">
+            <div class="box-title">Critical Thinking:</div>
+            <ul>
+                <li>How would you check if the generator is truly "fair"? What results would you expect to see?</li>
+                <br>
+                <li>What if the generated numbers were 1–20 instead of 1–10? Which lines of your code would need to change?</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Guide: Random Number Fairness</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #059669;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --accent: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e1b4b, var(--primary));
+            color: white;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="80" height="80" stroke="rgba(255,255,255,0.05)" stroke-width="4" fill="none"/></svg>') repeat;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topic {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 3rem;
+        }
+
+        .section-header {
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+        
+        .section-header:first-child {
+            margin-top: 0;
+        }
+
+        .part-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .part-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+
+        ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        ul li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 1rem;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid #1e293b;
+        }
+
+        .answer-key {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+        }
+
+        .answer-key h2 {
+            color: #166534;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #bbf7d0;
+            padding-bottom: 0.5rem;
+        }
+
+        .answer-box {
+            background: #ffffff;
+            padding: 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .answer-title {
+            font-weight: 600;
+            color: #047857;
+            margin-bottom: 0.5rem;
+        }
+
+        .answer-text {
+            color: #b91c1c;
+            font-family: 'Consolas', monospace;
+            font-weight: 600;
+            background: #fef2f2;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .teacher-notes {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-top: 3rem;
+        }
+
+        .teacher-notes h2 {
+            color: #d97706;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #fde68a;
+            padding-bottom: 0.5rem;
+        }
+
+        .dialogue {
+            font-style: italic;
+            color: var(--text-muted);
+            padding-left: 1rem;
+            border-left: 3px solid var(--border);
+            margin: 1rem 0;
+            background: #f1f5f9;
+            padding: 0.75rem 1rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .diff-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .diff-title-weak { color: #dc2626; font-weight: 700; margin-bottom: 0.75rem; border-bottom: 1px solid #fecaca; padding-bottom: 0.5rem;}
+        .diff-title-strong { color: #16a34a; font-weight: 700; margin-bottom: 0.75rem; border-bottom: 1px solid #bbf7d0; padding-bottom: 0.5rem;}
+
+        .insight-box {
+            background: #fee2e2;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1.5rem;
+        }
+
+        .insight-title {
+            color: #b91c1c;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .objective-box {
+            background: #e0e7ff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>TEACHER GUIDE</h1>
+        <div class="topic">15-Mark Question – Random Number Fairness</div>
+    </header>
+
+    <div class="content">
+        
+        <div class="objective-box">
+            <h2 style="color: var(--primary); margin-bottom: 0.5rem; font-size: 1.25rem;">Lesson Details</h2>
+            <p><strong>Duration:</strong> 60–75 minutes</p>
+            <p><strong>Objectives:</strong> Identify array structures, generate/store random numbers, count frequency, sort a 2D array, and output probabilities to 4 d.p.</p>
+        </div>
+
+        <div class="section-header">Lesson Delivery Plan</div>
+
+        <div class="part-container">
+            <div class="part-header">PART 1: Starter (10 mins)</div>
+            <p><strong>Ask:</strong> If I generate 100 numbers between 1 and 10, how do I check if it is fair?</p>
+            <p><strong>Expected ideas:</strong> Count how many times each number appears, compare frequencies.</p>
+            <p class="dialogue">"Today we scale this to 100,000 numbers like an exam question."</p>
+        </div>
+
+        <div class="part-container">
+            <div class="part-header">PART 2: Decode the Question (15 mins)</div>
+            <h3>Step 1: Identify Data Structures</h3>
+            <p>Go through the array structures with students (see Answer Key below).</p>
+            <h3>Step 2: Identify Question Type</h3>
+            <p><strong>Ask:</strong> What type of 15-mark question is this?</p>
+            <p><strong>Answer:</strong> Simulation, Frequency, Sorting.</p>
+            <h3>Step 3: Break into Tasks</h3>
+            <p>Generate numbers → Store numbers → Count frequency → Sort → Calculate chance → Output.</p>
+        </div>
+
+        <div class="part-container">
+            <div class="part-header">PART 3: Teacher Modelling (20 mins)</div>
+            <p class="dialogue">"We prepare storage before counting"</p>
+            <div class="code-block">FOR X ← 1 TO 10
+   CountedNumber[X,1] ← X
+   CountedNumber[X,2] ← 0
+NEXT X</div>
+            
+            <p style="margin-top: 1.5rem; font-weight: 600; color: var(--accent);">KEY SKILL: Generate + Count</p>
+            <p class="dialogue">"We combine generation + counting in ONE loop"</p>
+            <div class="code-block">Temp ← ROUND(RANDOM() * 9, 0) + 1
+CountedNumber[Temp,2] ← CountedNumber[Temp,2] + 1</div>
+
+            <p style="margin-top: 1.5rem;"><strong>Sorting Concept:</strong> We are sorting Frequency (column 2). Emphasise that we must swap BOTH columns.</p>
+            <p><strong>Chance Formula:</strong> chance = frequency / 100000</p>
+        </div>
+
+        <div class="part-container">
+            <div class="part-header">PARTS 4-6: Practice & Plenary (30 mins)</div>
+            <p><strong>Guided Practice (15m):</strong> Students complete worksheet. Walk around and support.</p>
+            <p><strong>Independent Practice (10m):</strong> Students attempt full pseudocode on paper.</p>
+            <p><strong>Plenary (5m):</strong> Discuss why we initialise frequency, why swap two columns, and why round to 4 d.p.</p>
+        </div>
+
+        <div class="answer-key">
+            <h2>WORKSHEET ANSWER KEY</h2>
+            
+            <div class="answer-box">
+                <div class="answer-title">Section A: Data Structures</div>
+                <p>RandomNumber[] stores <span class="answer-text">all generated numbers</span></p>
+                <p>CountedNumber[X,1] stores <span class="answer-text">number (1-10)</span></p>
+                <p>CountedNumber[X,2] stores <span class="answer-text">frequency</span></p>
+            </div>
+
+            <div class="answer-box">
+                <div class="answer-title">Section B: Initialisation</div>
+                <p>CountedNumber[X,1] ← <span class="answer-text">X</span></p>
+                <p>CountedNumber[X,2] ← <span class="answer-text">0</span></p>
+            </div>
+
+            <div class="answer-box">
+                <div class="answer-title">Section C: Generation & Counting</div>
+                <p>ROUND(RANDOM() * <span class="answer-text">9</span>, 0) + <span class="answer-text">1</span></p>
+                <p>RandomNumber[X] ← <span class="answer-text">Temp</span></p>
+                <p>CountedNumber[<span class="answer-text">Temp</span>,2] ← CountedNumber[<span class="answer-text">Temp</span>,2] + 1</p>
+            </div>
+
+            <div class="answer-box">
+                <div class="answer-title">Section D: Sorting Condition</div>
+                <p>IF CountedNumber[I,2] <span class="answer-text">&lt;</span> CountedNumber[I+1,2]</p>
+                <p><strong>Why?</strong> Because we are sorting in descending order (highest frequency first).</p>
+            </div>
+
+            <div class="answer-box">
+                <div class="answer-title">Section E: Swap Logic</div>
+                <div class="code-block" style="background: transparent; color: #047857; padding: 0; margin: 0.5rem 0; box-shadow: none; border: none; font-weight: 600;">CountedNumber[I,1] ← CountedNumber[I+1,1]
+CountedNumber[I,2] ← CountedNumber[I+1,2]
+
+CountedNumber[I+1,1] ← Temp1
+CountedNumber[I+1,2] ← Temp2</div>
+            </div>
+
+            <div class="answer-box">
+                <div class="answer-title">Section F: Output</div>
+                <p>OUTPUT "Number: ", <span class="answer-text">CountedNumber[I,1]</span></p>
+                <p>OUTPUT "Chance: ", ROUND(<span class="answer-text">CountedNumber[I,2]</span> / 100000, 4)</p>
+            </div>
+        </div>
+
+        <div class="teacher-notes">
+            <h2>TEACHER NOTES & STRATEGIES</h2>
+            
+            <div class="meta-info">
+                <div class="diff-card">
+                    <div class="diff-title-weak">Scaffolding for Weaker Students</div>
+                    <p>Do not expect them to complete the sorting algorithm independently. Focus heavily on:</p>
+                    <ul>
+                        <li>Array initialisation</li>
+                        <li>Random number generation</li>
+                        <li>Counting the frequency</li>
+                    </ul>
+                </div>
+                <div class="diff-card">
+                    <div class="diff-title-strong">Pushing Stronger Students</div>
+                    <p>Expect a full, perfectly indented solution from start to finish. Focus on:</p>
+                    <ul>
+                        <li>The full Bubble Sort algorithm including the swap logic</li>
+                        <li>Correct output formatting</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <div class="insight-title">Critical Teaching Insight</div>
+                <p>Students traditionally struggle most with:</p>
+                <ul style="margin-top: 0.5rem;">
+                    <li><strong>2D array meaning:</strong> Keep reinforcing what Column 1 and Column 2 represent.</li>
+                    <li><strong>Swapping correctly:</strong> They often forget they must swap <em>both</em> the number and its frequency to keep them linked.</li>
+                    <li><strong>Combining loops:</strong> They may try to loop 100,000 times for everything instead of isolating the counting.</li>
+                </ul>
+                <p style="margin-top: 1rem; font-weight: 700;">👉 Spend extra time checking for understanding on these points.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
